@@ -1,0 +1,13 @@
+node {
+    def server = Artifactory.server 'admin'
+    def dockerHome = tool 'docker'
+    env.PATH = "${dockerHome}/bin:${env.PATH}"
+    
+    stage('clone') {
+        git 'https://github.com/eggnice/jenkins_maven.git'
+    }
+    
+    stage('build') {
+        docker.build("my-java:${env.BUILD_ID}", "./my-java")
+    }
+}
